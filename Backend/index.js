@@ -1,6 +1,7 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
+const path = require('path');
 
 const StudentAuthRouter = require('./Routes/StudentAuthRouter');
 const TeacherAuthRouter = require('./Routes/TeacherAuthRouter');
@@ -16,9 +17,13 @@ const app = express();
 
 const PORT = process.env.PORT || 5000;
 
-
+app.use(express.static(path.join(__dirname, 'build')));
 app.use(express.json());
 app.use(cors());
+
+app.get('*', (req, res) => {
+    res.sendFile(path.join(__dirname, 'build', 'index.html'));
+  });
 
 app.use('/studentAuth',StudentAuthRouter );
 app.use('/teacherAuth',TeacherAuthRouter );
